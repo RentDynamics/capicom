@@ -1,0 +1,49 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/python:3.6.5
+
+    working_directory: ~/capicom
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv ~/envs/capicom
+            . ~/envs/capicom/bin/activate
+            pip install --upgrade pip
+            pip install -r requirements.txt
+
+      - save_cache:
+          paths:
+            - ~/envs/capicom
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            mkdir xunit
+            . ~/envs/capicom/bin/activate
+            nosetests --with-xunit --xunit-file=./xunit/xunit.xml
+
+      - store_test_results:
+          path: ./xunit
+
+      - store_artifacts:
+          path: ./xunit
+
+      - deploy:
+          name: PyPi Deploy
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              sudo pip install twine
+              python setup.py sdist
+              twine upload --username "${PYPI_USERNAME}" --password "${PYPI_PASSWORD}" dist/*
+            fi

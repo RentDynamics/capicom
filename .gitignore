@@ -1,0 +1,7 @@
+*.pyc
+*.cpython
+.idea
+.DS_Store
+xunit/*
+.vscode
+__pycache__
