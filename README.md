@@ -12,7 +12,8 @@ so we unescape it in the example just to be safe.
 
 ### Usage
 
-```import html
+```py
+import html
 
 from Crypto.Cipher import DES3
 
@@ -22,4 +23,5 @@ from capicom.decrypt import Capicom3DESCipher
 encryption_key = 'your encryption password'
 encrypted_field = html.unescape('encrypted string')
 decrypted_field = Capicom3DESCipher.decrypt_3des_realpage(encrypted_field, encryption_key)
-print(decrypted_field)```
+print(decrypted_field)
+```

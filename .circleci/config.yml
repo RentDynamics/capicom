@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/python:3.6.5
+      - image: cimg/python:3.11.2
 
     working_directory: ~/capicom
 
@@ -31,13 +31,7 @@ jobs:
           command: |
             mkdir xunit
             . ~/envs/capicom/bin/activate
-            nosetests --with-xunit --xunit-file=./xunit/xunit.xml
-
-      - store_test_results:
-          path: ./xunit
-
-      - store_artifacts:
-          path: ./xunit
+            python -m unittest discover ./tests '*tests.py'
 
       - deploy:
           name: PyPi Deploy
@@ -45,5 +39,5 @@ jobs:
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               sudo pip install twine
               python setup.py sdist
-              twine upload --username "${PYPI_USERNAME}" --password "${PYPI_PASSWORD}" dist/*
+              twine upload --username __token__ --password "${PYPI_API_TOKEN}" dist/*
             fi

@@ -9,6 +9,6 @@ setup(
     url='https://github.com/RentDynamics/capicom',
     packages=['capicom'],
     install_requires=[
-        'pycrypto',
+        'pycryptodome',
     ]
 )
