@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='capicom',
-    version='1.0.0',
+    version='2.0.0',
     description='Python library to work with CAPICOM',
     author='Rent Dynamics',
     author_email='dev-accounts@rentdynamics.com',
