@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 jobs:
   build:
     docker:
@@ -33,7 +33,7 @@ jobs:
             . ~/envs/capicom/bin/activate
             python -m unittest discover ./tests '*tests.py'
 
-      - deploy:
+      - run:
           name: PyPi Deploy
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
@@ -42,3 +42,10 @@ jobs:
               python setup.py sdist
               twine upload --username __token__ --password "${PYPI_API_TOKEN}" dist/*
             fi
+
+workflows:
+  build:
+    jobs:
+      - build:
+          context:
+            - RentDynamicsGeneral
